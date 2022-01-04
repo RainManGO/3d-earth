@@ -10,20 +10,11 @@ import { initCamera } from "./camera";
 import { initLight } from "./light";
 import { starBackground } from "./starBg";
 import { earth3dObj } from "./earth/index";
+import { cityWaveAnimate } from "./earth/cityPoint";
+import type { EarthConfigProps, City, FlyData } from "./types/index";
+import { InitFlyLine } from "./tools/flyLine.js";
 
 const TWEEN = require("@tweenjs/tween.js");
-
-/**
- * @description: 地球配置
- * @param {*}
- * @return {*}
- */
-interface EarthConfigProps {
-  //地球是否旋转
-  autoRotate: Boolean;
-  //是否缩放到中国，之后再放大动画
-  zoomChina: Boolean;
-}
 
 class Earth {
   width: number;
@@ -36,14 +27,27 @@ class Earth {
   orbitControl: OrbitControls;
   earth3dObj: THREE.Object3D;
   earthConfig: EarthConfigProps;
-
+  waveMeshArr: THREE.Mesh[];
+  //城市列表
+  cityList?: Record<string, City>;
+  //飞线数据
+  flyLineData?: FlyData[];
+  //管理飞线
+  flyManager:InitFlyLine = null;
+  
   constructor(
     containerId: string,
+    //地球飞线城市坐标点
+    cityList?: Record<string, City>,
+    //飞线数据
+    flyLineData?: FlyData[],
     config: EarthConfigProps = { autoRotate: true, zoomChina: false }
   ) {
     this.parentDom = document.getElementById(containerId);
     this.width = this.parentDom.offsetWidth;
     this.height = this.parentDom.offsetHeight;
+    this.cityList = cityList;
+    this.flyLineData = flyLineData;
     this.earthConfig = config;
     this.init();
   }
@@ -51,10 +55,12 @@ class Earth {
   load = () => {
     this.animate();
     this.scene.add(starBackground());
-    this.earth3dObj = earth3dObj();
+    let { object3D, waveMeshArr } = earth3dObj(this.cityList);
+    this.earth3dObj = object3D;
+    this.waveMeshArr = waveMeshArr;
     this.scene.add(this.earth3dObj);
     if (this.earthConfig.autoRotate && this.earthConfig.zoomChina) {
-      this.autoRotateEarth()
+      this.autoRotateEarth();
     }
   };
 
@@ -107,8 +113,8 @@ class Earth {
       .to({ rotateY: endRotateY, zoom: endZoom }, 36000) //.to({rotateY: endRotateY, zoom: endZoom}, 10000)
       .easing(TWEEN.Easing.Quadratic.Out)
       .onUpdate(function (object: any) {
-         if (that.earth3dObj) {
-            that.earth3dObj.rotation.set(0, object.rotateY, 0);
+        if (that.earth3dObj) {
+          that.earth3dObj.rotation.set(0, object.rotateY, 0);
         }
         (that.orbitControl as any).zoom0 = object.zoom < 1 ? 1 : object.zoom;
         that.orbitControl.reset();
@@ -141,9 +147,12 @@ class Earth {
    */
 
   animate = () => {
+    if (this.waveMeshArr) {
+      cityWaveAnimate(this.waveMeshArr);
+    }
     requestAnimationFrame(this.animate);
     //只是自转，不需要缩放到中国
-    if ( this.earth3dObj) {
+    if (this.earth3dObj) {
       if (this.earthConfig.autoRotate && !this.earthConfig.zoomChina) {
         this.earth3dObj.rotation.y += 0.01;
       }
