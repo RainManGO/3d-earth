@@ -10,9 +10,8 @@ import { initCamera } from "./camera";
 import { initLight } from "./light";
 import { starBackground } from "./starBg";
 import { earth3dObj } from "./earth/index";
-import { Object3D } from "three";
 
-const TWEEN = require('@tweenjs/tween.js')
+const TWEEN = require("@tweenjs/tween.js");
 
 /**
  * @description: 地球配置
@@ -35,23 +34,29 @@ class Earth {
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
   orbitControl: OrbitControls;
-  earth3dObj:Object3D 
-  earthConfig:EarthConfigProps
+  earth3dObj: THREE.Object3D;
+  earthConfig: EarthConfigProps;
 
-  constructor(containerId: string,config:EarthConfigProps = {autoRotate:true,zoomChina:false}) {
+  constructor(
+    containerId: string,
+    config: EarthConfigProps = { autoRotate: true, zoomChina: false }
+  ) {
     this.parentDom = document.getElementById(containerId);
     this.width = this.parentDom.offsetWidth;
     this.height = this.parentDom.offsetHeight;
-    this.earthConfig = config
+    this.earthConfig = config;
     this.init();
   }
 
-  load() {
+  load = () => {
     this.animate();
     this.scene.add(starBackground());
     this.earth3dObj = earth3dObj();
-    this.scene.add(earth3dObj());
-  }
+    this.scene.add(this.earth3dObj);
+    if (this.earthConfig.autoRotate && this.earthConfig.zoomChina) {
+      this.autoRotateEarth()
+    }
+  };
 
   /**
    * @description: 初始化 threeJS 环境
@@ -92,6 +97,8 @@ class Earth {
     const endRotateY = 3.15 * Math.PI;
     const endZoom = 4;
 
+    var that = this;
+
     //旋转地球动画
     var rotateEarthStep = new TWEEN.Tween({
       rotateY: startRotateY,
@@ -99,27 +106,30 @@ class Earth {
     })
       .to({ rotateY: endRotateY, zoom: endZoom }, 36000) //.to({rotateY: endRotateY, zoom: endZoom}, 10000)
       .easing(TWEEN.Easing.Quadratic.Out)
-      .onUpdate(function (object:any) {
-        that.earth3dObj.rotation.set(0, object.rotateY, 0);
+      .onUpdate(function (object: any) {
+         if (that.earth3dObj) {
+            that.earth3dObj.rotation.set(0, object.rotateY, 0);
+        }
         (that.orbitControl as any).zoom0 = object.zoom < 1 ? 1 : object.zoom;
         that.orbitControl.reset();
       });
 
-    var that = this
     var rotateEarthStepBack = new TWEEN.Tween({
       rotateY: endRotateY,
       zoom: endZoom,
     })
       .to({ rotateY: 3.15 * Math.PI * 2, zoom: startZoom }, 36000) //.to({rotateY: endRotateY, zoom: endZoom}, 10000)
       .easing(TWEEN.Easing.Quadratic.Out)
-      .onUpdate(function (object:any) {
-        that.earth3dObj.rotation.set(0, object.rotateY, 0);
+      .onUpdate(function (object: any) {
+        if (that.earth3dObj) {
+          that.earth3dObj.rotation.set(0, object.rotateY, 0);
+        }
         (that.orbitControl as any).zoom0 = object.zoom < 1 ? 1 : object.zoom;
         that.orbitControl.reset();
       });
 
-    // rotateEarthStep.chain(rotateEarthStepBack);
-    // rotateEarthStepBack.chain(rotateEarthStep);
+    rotateEarthStep.chain(rotateEarthStepBack);
+    rotateEarthStepBack.chain(rotateEarthStep);
 
     rotateEarthStep.start();
   }
@@ -131,14 +141,19 @@ class Earth {
    */
 
   animate = () => {
-    //如果不需要放大缩小，只是旋转
-    if (this.earthConfig.autoRotate) {
-      if (!this.earthConfig.zoomChina) {
-          this.earth3dObj.rotateY(0.001)
-      } 
+    requestAnimationFrame(this.animate);
+    //只是自转，不需要缩放到中国
+    if ( this.earth3dObj) {
+      if (this.earthConfig.autoRotate && !this.earthConfig.zoomChina) {
+        this.earth3dObj.rotation.y += 0.01;
+      }
     }
     this.renderer.render(this.scene, this.camera);
-    requestAnimationFrame(this.animate);
+    this.afterAnimate();
+  };
+
+  afterAnimate = () => {
+    TWEEN.update();
   };
 }
 
