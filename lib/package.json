@@ -1,8 +1,8 @@
 {
-  "name": "my-webpack-project",
-  "version": "1.0.0",
-  "description": "My webpack project",
-  "main": "index.js",
+  "name": "3d-earth",
+  "version": "1.0.1",
+  "description": "基于threeJs 的3d地球组件",
+  "main": "./dist/earth.min.js",
   "author": "zy",
   "license": "MIT",
   "scripts": {
