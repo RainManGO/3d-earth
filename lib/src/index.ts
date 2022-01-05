@@ -12,7 +12,7 @@ import { starBackground } from "./starBg";
 import { earth3dObj } from "./earth/index";
 import { cityWaveAnimate } from "./earth/cityPoint";
 import type { EarthConfigProps, City, FlyData } from "./types/index";
-import { InitFlyLine } from "./tools/flyLine.js";
+import { InitFlyLine } from "../src/tools/flyLine";
 
 const TWEEN = require("@tweenjs/tween.js");
 
@@ -32,16 +32,16 @@ class Earth {
   cityList?: Record<string, City>;
   //飞线数据
   flyLineData?: FlyData[];
-  //管理飞线
-  flyManager:InitFlyLine = null;
-  
+  //飞线管理
+  flyManager: InitFlyLine = null;
+
   constructor(
     containerId: string,
     //地球飞线城市坐标点
     cityList?: Record<string, City>,
     //飞线数据
     flyLineData?: FlyData[],
-    config: EarthConfigProps = { autoRotate: true, zoomChina: false }
+    config: EarthConfigProps = { autoRotate: true, zoomChina: false,starBackground:false }
   ) {
     this.parentDom = document.getElementById(containerId);
     this.width = this.parentDom.offsetWidth;
@@ -54,10 +54,16 @@ class Earth {
 
   load = () => {
     this.animate();
+    if (this.earthConfig.starBackground) {
     this.scene.add(starBackground());
-    let { object3D, waveMeshArr } = earth3dObj(this.cityList);
+  }
+    let { object3D, waveMeshArr, flyManager } = earth3dObj(
+      this.cityList,
+      this.flyLineData
+    );
     this.earth3dObj = object3D;
     this.waveMeshArr = waveMeshArr;
+    this.flyManager = flyManager;
     this.scene.add(this.earth3dObj);
     if (this.earthConfig.autoRotate && this.earthConfig.zoomChina) {
       this.autoRotateEarth();
@@ -88,6 +94,7 @@ class Earth {
     orbitControl.maxZoom = controlConfig.maxZoom;
     orbitControl.minPolarAngle = controlConfig.minPolarAngle;
     orbitControl.maxPolarAngle = controlConfig.maxPolarAngle;
+    
     orbitControl.update();
     this.orbitControl = orbitControl;
   }
@@ -163,6 +170,10 @@ class Earth {
 
   afterAnimate = () => {
     TWEEN.update();
+    //飞线更新，这句话一定要有
+    if (this.flyManager != null) {
+      this.flyManager.animation();
+    }
   };
 }
 

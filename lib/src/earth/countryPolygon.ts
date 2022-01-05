@@ -2,7 +2,7 @@
  * @Author: ZY
  * @Date: 2021-12-31 15:47:59
  * @LastEditors: ZY
- * @LastEditTime: 2021-12-31 16:15:25
+ * @LastEditTime: 2022-01-05 10:15:57
  * @FilePath: /3d-earth/lib/src/earth/countryPolygon.ts
  * @Description: 世界轮廓
  */
@@ -13,7 +13,7 @@ import {
   LineSegments
 } from "three";
 //引入国家边界数据
-import pointArr from "../data/world.js";
+import pointArr from "../data/world";
 import { countryLineColor } from "../config/index";
 // R:球面半径
 function countryLine(R:number) {

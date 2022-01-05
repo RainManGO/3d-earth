@@ -1,8 +1,9 @@
+import { starBackground } from './../starBg';
 /*
  * @Author: ZY
  * @Date: 2022-01-04 14:46:00
  * @LastEditors: ZY
- * @LastEditTime: 2022-01-04 16:52:14
+ * @LastEditTime: 2022-01-05 14:49:04
  * @FilePath: /3d-earth/lib/src/types/index.ts
  * @Description: 类型
  */
@@ -15,9 +16,11 @@
  */
 export interface EarthConfigProps {
   //地球是否旋转
-  autoRotate: Boolean;
+  autoRotate: boolean;
   //是否缩放到中国，之后再放大动画
-  zoomChina: Boolean;
+  zoomChina: boolean;
+  //是否显示星空背景
+  starBackground: boolean
 }
 
 //城市

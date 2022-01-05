@@ -2,12 +2,15 @@
  * @Author: ZY
  * @Date: 2021-12-30 17:32:26
  * @LastEditors: ZY
- * @LastEditTime: 2021-12-30 17:35:09
+ * @LastEditTime: 2022-01-05 14:36:30
  * @FilePath: /3d-earth/lib/src/light.ts
  * @Description: 灯光
  */
 
-import { DirectionalLight,PointLight,HemisphereLight,AmbientLight,Scene } from "three";
+import { DirectionalLight,PointLight,HemisphereLight,AmbientLight,Scene,TextureLoader } from "three";
+import lensflare0 from "./img/lensflare0.png";
+import lensflare3 from "./img/lensflare3.png";
+import {Lensflare,LensflareElement} from "three/examples/jsm/objects/Lensflare.js";
 
 export const initLight = (scene:Scene)=>{
    /**
@@ -30,9 +33,7 @@ export const initLight = (scene:Scene)=>{
     var pointLight = new PointLight(0x80d4ff, 1);
     pointLight.position.set(-250, 250, 100);
     scene.add(pointLight);
-    var pointLight = new PointLight(0x80d4ff, 1);
-    pointLight.position.set(-250, 250, 100);
-    scene.add(pointLight);
+ 
     // 半球光1
     var hemisphereLight = new HemisphereLight(0xffffff, 0x3d6399, 1);
     hemisphereLight.position.set(-250, 250, 100);

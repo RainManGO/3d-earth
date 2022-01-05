@@ -2,7 +2,7 @@
  * @Author: ZY
  * @Date: 2022-01-04 14:29:23
  * @LastEditors: ZY
- * @LastEditTime: 2022-01-04 16:26:32
+ * @LastEditTime: 2022-01-05 15:18:43
  * @FilePath: /3d-earth/lib/src/earth/cityPoint.ts
  * @Description: 城市标注点。涟漪
  */
@@ -20,10 +20,11 @@ import type { City } from "../types/index";
 import { lon2xyz } from "../tools/index";
 import { earthRadius } from "../config/index";
 import wavePng from "../img/wave.png";
+import pointPng from "../img/point.png";
 
 export const getCityMeshGroup = (cityList:Record<string,City>) => {
-  let cityMeshGroup = new Group();
   let waveMeshArr = [];
+  let pointMeshArr = [];
 
   for (const cityName in cityList) {
     var city = cityList[cityName];
@@ -34,7 +35,7 @@ export const getCityMeshGroup = (cityList:Record<string,City>) => {
     var texture = textureLoader.load(wavePng);
 
     // 如果不同mesh材质的透明度、颜色等属性同一时刻不同，材质不能共享
-    var cityMaterial = new MeshBasicMaterial({
+    var cityWaveMaterial = new MeshBasicMaterial({
       color: 0x22ffcc,
       map: texture,
       transparent: true, //使用背景透明的png贴图，注意开启透明计算
@@ -43,14 +44,28 @@ export const getCityMeshGroup = (cityList:Record<string,City>) => {
       depthWrite: false, //禁止写入深度缓冲区数据
     });
 
-    var cityMesh = new Mesh(cityGeometry, cityMaterial);
+    //城市点添加
+    var pointTexture = textureLoader.load(pointPng);
+    var cityPointMaterial = new MeshBasicMaterial({
+      color:0xffc300,
+      map: pointTexture,
+      transparent: true, //使用背景透明的png贴图，注意开启透明计算
+      depthWrite:false,//禁止写入深度缓冲区数据
+    });
 
-    var size = earthRadius * 0.08; //矩形平面Mesh的尺寸
-    (cityMesh as any).size = size; //自顶一个属性，表示mesh静态大小
-    cityMesh.scale.set(size, size, size); //设置mesh大小
-    (cityMesh as any)._s = Math.random() * 1.0 + 1.0; //自定义属性._s表示mesh在原始大小基础上放大倍数  光圈在原来mesh.size基础上1~2倍之间变化
+    var cityWaveMesh = new Mesh(cityGeometry, cityWaveMaterial);
+    var cityMesh = new Mesh(cityGeometry, cityPointMaterial);
 
-    cityMesh.position.set(cityXyz.x, cityXyz.y, cityXyz.z);
+    var size = earthRadius*0.05;//矩形平面Mesh的尺寸
+    cityMesh.scale.set(size, size, size);//设置mesh大小
+
+    var size = earthRadius * 0.12; //矩形平面Mesh的尺寸
+    (cityWaveMesh as any).size = size; //自顶一个属性，表示mesh静态大小
+    cityWaveMesh.scale.set(size, size, size); //设置mesh大小
+    (cityWaveMesh as any)._s = Math.random() * 1.0 + 1.0; //自定义属性._s表示mesh在原始大小基础上放大倍数  光圈在原来mesh.size基础上1~2倍之间变化
+
+    cityWaveMesh.position.set(cityXyz.x, cityXyz.y, cityXyz.z);
+    cityMesh.position.set(cityXyz.x, cityXyz.y, cityXyz.z)
 
     // mesh姿态设置
     // mesh在球面上的法线方向(球心和球面坐标构成的方向向量)
@@ -59,12 +74,14 @@ export const getCityMeshGroup = (cityList:Record<string,City>) => {
     var meshNormal = new Vector3(0, 0, 1);
     // 四元数属性.quaternion表示mesh的角度状态
     //.setFromUnitVectors();计算两个向量之间构成的四元数值
+    cityWaveMesh.quaternion.setFromUnitVectors(meshNormal, coordVec3);
     cityMesh.quaternion.setFromUnitVectors(meshNormal, coordVec3);
-    cityMeshGroup.add(cityMesh);
-    waveMeshArr.push(cityMesh);
+
+    waveMeshArr.push(cityWaveMesh);
+    pointMeshArr.push(cityMesh)
   }
 
-  return waveMeshArr;
+  return {waveMeshArr,pointMeshArr};
 };
 
 export const cityWaveAnimate = (WaveMeshArr: Mesh[]) => {

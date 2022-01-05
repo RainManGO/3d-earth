@@ -1,3 +1,6 @@
+// @ts-nocheck
+import * as THREE from "three";
+
 export class InitFlyLine {
     constructor({
         texture
