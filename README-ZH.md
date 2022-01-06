@@ -22,43 +22,50 @@ Language: [English](README.md) | [中文简体](README-ZH.md)
 
 
 
-3D Earth is a beautiful component of earth flying line based on threejs 
+3d-earth 是一个漂亮的，基于threejs 的组件
 
 
 
 ## Install
+
 ```shell
   npm install 3d-earth
 ```
+
 or
 
 ```shell
   yarn add 3d-earth
 ```
+
 ## Features
 
-- [x]  star background
-- [x]  cloud
-- [x] city wave
-- [x]  glow sprite
-- [x] world polygon
-- [x] flyLine
-- [x]  earth roate and zoom animate 
+- [x]  星空背景
+- [x]  云层
+- [x] 城市位置涟漪
+- [x]  光晕
+- [x] 世界地图边界
+- [x] 飞线效果
+- [x]  地球自转动画
+- [x] 自动缩放中国动画
 
 
 ## Usage
 
 
-build  esm  , support  html/vue/react   you can look at example
+
+已打包esm 文件，如有其他需求自行打包。支持vue/react/html 简单嵌入
 
 &nbsp;
 
 config
 
 ```js
-  //earth auto Roate
+   //地球是否旋转
   autoRotate: boolean;
+  //是否缩放到中国，之后再放大动画
   zoomChina: boolean;
+  //是否显示星空背景
   starBackground: boolean
 ```
 
@@ -73,4 +80,5 @@ config
 
 
 ## License
+
 3d-earth  is open-sourced software licensed under the [MIT license](./LICENSE).
