@@ -2,7 +2,7 @@
  * @Author: ZY
  * @Date: 2022-01-05 15:58:57
  * @LastEditors: ZY
- * @LastEditTime: 2022-01-06 09:03:38
+ * @LastEditTime: 2022-01-06 15:11:33
  * @FilePath: /3d-earth/example/react/src/pages/index.tsx
  * @Description: 文件描述
  */
@@ -156,7 +156,7 @@ export default function IndexPage() {
           },
         ];
     
-          let e = new Earth("container",cityList,bizLines);
+          let e = new Earth("container",cityList,bizLines,{autoRotate:true,zoomChina:true,starBackground:true});
           e.load()
   },[])
   

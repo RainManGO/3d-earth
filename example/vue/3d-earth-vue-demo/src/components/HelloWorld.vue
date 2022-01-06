@@ -156,7 +156,7 @@ export default {
           },
         ];
     
-          let e = new Earth("container",cityList,bizLines);
+          let e = new Earth("container",cityList,bizLines,{autoRotate:true,zoomChina:true,starBackground:true});
           e.load()
     })    
   } 
