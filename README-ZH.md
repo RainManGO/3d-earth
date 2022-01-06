@@ -21,8 +21,15 @@ Language: [English](README.md) | [中文简体](README-ZH.md)
 
 
 
+3d-earth 是一个漂亮的，基于threejs 的组件。
 
-3d-earth 是一个漂亮的，基于threejs 的组件
+
+
+效果展示：
+
+![3d-earth](https://img-blog.csdnimg.cn/448b48bbe7394022b089c7617d2222d8.gif)
+
+
 
 
 

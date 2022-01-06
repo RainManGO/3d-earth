@@ -21,10 +21,13 @@ Language: [English](README.md) | [中文简体](README-ZH.md)
 
 
 
-
 3D Earth is a beautiful component of earth flying line based on threejs 
 
 
+
+look：
+
+![3d-earth](https://img-blog.csdnimg.cn/448b48bbe7394022b089c7617d2222d8.gif)
 
 ## Install
 ```shell
