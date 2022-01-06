@@ -7,10 +7,7 @@
  * @Description: 灯光
  */
 
-import { DirectionalLight,PointLight,HemisphereLight,AmbientLight,Scene,TextureLoader } from "three";
-import lensflare0 from "./img/lensflare0.png";
-import lensflare3 from "./img/lensflare3.png";
-import {Lensflare,LensflareElement} from "three/examples/jsm/objects/Lensflare.js";
+import { DirectionalLight,PointLight,HemisphereLight,AmbientLight,Scene } from "three";
 
 export const initLight = (scene:Scene)=>{
    /**

@@ -9,7 +9,7 @@
 
 import { Object3D } from "three";
 import { createEarthImageMesh } from "./earth";
-import { createEarthCloudImageMesh } from "./cloud";
+// import { createEarthCloudImageMesh } from "./cloud";
 import { earthGlow } from "./glow";
 import { earthRadius } from "../config/index";
 import { countryLine } from "./countryPolygon";

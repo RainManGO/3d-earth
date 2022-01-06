@@ -8,7 +8,6 @@
  */
 
 import {
-  Group,
   PlaneBufferGeometry,
   TextureLoader,
   MeshBasicMaterial,

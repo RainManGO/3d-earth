@@ -1,9 +1,8 @@
-import { starBackground } from './../starBg';
 /*
  * @Author: ZY
  * @Date: 2022-01-04 14:46:00
  * @LastEditors: ZY
- * @LastEditTime: 2022-01-05 14:49:04
+ * @LastEditTime: 2022-01-05 16:50:53
  * @FilePath: /3d-earth/lib/src/types/index.ts
  * @Description: 类型
  */

@@ -1,8 +1,12 @@
 {
   "name": "3d-earth",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "基于threeJs 的3d地球组件",
   "main": "./dist/earth.min.js",
+  "types": "./dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "author": "zy",
   "license": "MIT",
   "scripts": {

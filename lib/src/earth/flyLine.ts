@@ -14,8 +14,6 @@ import { earthRadius } from "../config/index";
 import { Vector3, CatmullRomCurve3, Object3D } from "three";
 import pointPng from "../img/point.png";
 
-let flyManager: InitFlyLine = null;
-
 export const earthAddFlyLine = (
   earth: Object3D,
   flyLineData: FlyData[],
