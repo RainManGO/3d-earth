@@ -107,7 +107,7 @@ class Earth {
   autoRotateEarth() {
     const startRotateY = (3.15 * Math.PI) / 2;
     const startZoom = -18;
-    const endRotateY = 3.15 * Math.PI;
+    const endRotateY = 3.3 * Math.PI;
     const endZoom = 4;
 
     var that = this;
