@@ -10,7 +10,7 @@
 import { FlyData, City } from "../types/index";
 import { InitFlyLine } from "../tools/flyLine";
 import { lon2xyz } from "../tools/index";
-import { earthRadius } from "../config/index";
+import { GlobalConfig } from "../config/index";
 import { Vector3, CatmullRomCurve3, Object3D } from "three";
 import pointPng from "../img/point.png";
 
@@ -66,8 +66,8 @@ const addFlyLine = (
 ) => {
   var coefficient = 1;
   var curvePoints = new Array();
-  var fromXyz = lon2xyz(earthRadius, fromCity.longitude, fromCity.latitude);
-  var toXyz = lon2xyz(earthRadius, toCity.longitude, toCity.latitude);
+  var fromXyz = lon2xyz(GlobalConfig.earthRadius, fromCity.longitude, fromCity.latitude);
+  var toXyz = lon2xyz(GlobalConfig.earthRadius, toCity.longitude, toCity.latitude);
   curvePoints.push(new Vector3(fromXyz.x, fromXyz.y, fromXyz.z));
 
   //根据城市之间距离远近，取不同个数个点
@@ -76,7 +76,7 @@ const addFlyLine = (
       (fromXyz.x - toXyz.x) * (fromXyz.x - toXyz.x) +
         (fromXyz.y - toXyz.y) * (fromXyz.y - toXyz.y) +
         (fromXyz.z - toXyz.z) * (fromXyz.z - toXyz.z)
-    ) / earthRadius;
+    ) / GlobalConfig.earthRadius;
   var partCount = 3 + Math.ceil(distanceDivRadius * 3);
   for (var i = 0; i < partCount; i++) {
     var partCoefficient =
@@ -93,7 +93,7 @@ const addFlyLine = (
           (fromXyz.z * (partCount - i)) / partCount +
           (toXyz.z * (i + 1)) / partCount,
       },
-      earthRadius,
+      GlobalConfig.earthRadius,
       partCoefficient
     );
     curvePoints.push(new Vector3(partTopXyz.x, partTopXyz.y, partTopXyz.z));

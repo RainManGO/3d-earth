@@ -13,6 +13,7 @@ import { earth3dObj } from "./earth/index";
 import { cityWaveAnimate } from "./earth/cityPoint";
 import type { EarthConfigProps, City, FlyData } from "./types/index";
 import { InitFlyLine } from "../src/tools/flyLine";
+import { GlobalConfig } from "./config";
 
 const TWEEN = require("@tweenjs/tween.js");
 
@@ -41,13 +42,23 @@ class Earth {
     cityList?: Record<string, City>,
     //飞线数据
     flyLineData?: FlyData[],
-    config: EarthConfigProps = { autoRotate: true, zoomChina: false,starBackground:false }
+    config: EarthConfigProps = {
+      earthRadius: GlobalConfig.earthRadius,
+      autoRotate: true,
+      zoomChina: false,
+      starBackground: false,
+      orbitControlConfig:{
+        enableZoom:false,
+        enableRotate:false
+      }
+    }
   ) {
     this.parentDom = document.getElementById(containerId);
     this.width = this.parentDom.offsetWidth;
     this.height = this.parentDom.offsetHeight;
     this.cityList = cityList;
     this.flyLineData = flyLineData;
+    GlobalConfig.earthRadius = config.earthRadius ?? GlobalConfig.earthRadius;
     this.earthConfig = config;
     this.init();
   }
@@ -55,8 +66,8 @@ class Earth {
   load = () => {
     this.animate();
     if (this.earthConfig.starBackground) {
-    this.scene.add(starBackground());
-  }
+      this.scene.add(starBackground());
+    }
     let { object3D, waveMeshArr, flyManager } = earth3dObj(
       this.cityList,
       this.flyLineData
@@ -94,7 +105,9 @@ class Earth {
     orbitControl.maxZoom = controlConfig.maxZoom;
     orbitControl.minPolarAngle = controlConfig.minPolarAngle;
     orbitControl.maxPolarAngle = controlConfig.maxPolarAngle;
-    
+    orbitControl.enableRotate = this.earthConfig.orbitControlConfig.enableRotate;
+    orbitControl.enableZoom = this.earthConfig.orbitControlConfig.enableZoom;
+
     orbitControl.update();
     this.orbitControl = orbitControl;
   }

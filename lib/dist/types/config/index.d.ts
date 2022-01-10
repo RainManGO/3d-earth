@@ -1,4 +1,4 @@
-export declare const earthRadius = 10;
+export declare var earthRadius: number;
 export declare const countryLineColor = 8037797;
 export declare const controlConfig: {
     minZoom: number;
@@ -6,3 +6,6 @@ export declare const controlConfig: {
     minPolarAngle: number;
     maxPolarAngle: number;
 };
+export declare class GlobalConfig {
+    static earthRadius: number;
+}

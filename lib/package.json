@@ -15,12 +15,14 @@
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
     "watch": "webpack --watch",
-    "serve": "webpack serve"
+    "serve": "webpack serve",
+    "commit": "cz"
   },
   "devDependencies": {
     "@types/three": "^0.135.0",
     "@webpack-cli/generators": "^2.4.1",
     "autoprefixer": "^10.4.0",
+    "commitizen": "^4.2.4",
     "css-loader": "^6.5.1",
     "html-webpack-plugin": "^5.5.0",
     "less": "^4.1.2",

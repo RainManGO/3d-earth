@@ -4,9 +4,14 @@
  * @return {*}
  */
 export interface EarthConfigProps {
+    earthRadius: number;
     autoRotate: boolean;
     zoomChina: boolean;
     starBackground: boolean;
+    orbitControlConfig: {
+        enableRotate: boolean;
+        enableZoom: boolean;
+    };
 }
 export interface City {
     name: string;

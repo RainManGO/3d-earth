@@ -2,7 +2,7 @@
  * @Author: ZY
  * @Date: 2022-01-04 14:29:23
  * @LastEditors: ZY
- * @LastEditTime: 2022-01-05 15:18:43
+ * @LastEditTime: 2022-01-10 12:01:45
  * @FilePath: /3d-earth/lib/src/earth/cityPoint.ts
  * @Description: 城市标注点。涟漪
  */
@@ -17,7 +17,7 @@ import {
 } from "three";
 import type { City } from "../types/index";
 import { lon2xyz } from "../tools/index";
-import { earthRadius } from "../config/index";
+import { GlobalConfig } from "../config/index";
 import wavePng from "../img/wave.png";
 import pointPng from "../img/point.png";
 
@@ -27,7 +27,7 @@ export const getCityMeshGroup = (cityList:Record<string,City>) => {
 
   for (const cityName in cityList) {
     var city = cityList[cityName];
-    var cityXyz = lon2xyz(earthRadius, city.longitude, city.latitude);
+    var cityXyz = lon2xyz(GlobalConfig.earthRadius, city.longitude, city.latitude);
 
     var cityGeometry = new PlaneBufferGeometry(1, 1); //默认在XOY平面上
     var textureLoader = new TextureLoader(); // TextureLoader创建一个纹理加载器对象
@@ -55,10 +55,10 @@ export const getCityMeshGroup = (cityList:Record<string,City>) => {
     var cityWaveMesh = new Mesh(cityGeometry, cityWaveMaterial);
     var cityMesh = new Mesh(cityGeometry, cityPointMaterial);
 
-    var size = earthRadius*0.05;//矩形平面Mesh的尺寸
+    var size = GlobalConfig.earthRadius*0.05;//矩形平面Mesh的尺寸
     cityMesh.scale.set(size, size, size);//设置mesh大小
 
-    var size = earthRadius * 0.12; //矩形平面Mesh的尺寸
+    var size = GlobalConfig.earthRadius * 0.12; //矩形平面Mesh的尺寸
     (cityWaveMesh as any).size = size; //自顶一个属性，表示mesh静态大小
     cityWaveMesh.scale.set(size, size, size); //设置mesh大小
     (cityWaveMesh as any)._s = Math.random() * 1.0 + 1.0; //自定义属性._s表示mesh在原始大小基础上放大倍数  光圈在原来mesh.size基础上1~2倍之间变化
